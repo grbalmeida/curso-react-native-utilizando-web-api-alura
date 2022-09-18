@@ -52,6 +52,17 @@ const estilos = StyleSheet.create({
         fontSize: 16,
         color: '#FFF',
     },
+    entrada: {
+        borderWidth: 2,
+        borderColor: '#ddd',
+        paddingHorizontal: 20,
+        fontSize: 16,
+        color: '#444',
+        marginTop: 20,
+        borderRadius: 8,
+        height: 44,
+        width: '90%',
+    }
 });
 
 

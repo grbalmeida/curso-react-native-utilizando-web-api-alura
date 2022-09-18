@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import estilos from './estilos';
-import { pegarRepositoriosDoUsuario } from '../../servicos/requisicoes/repositorios';
+import { pegarRepositoriosDoUsuario, pegarRepositoriosDoUsuarioPeloNome } from '../../servicos/requisicoes/repositorios';
 import { useIsFocused } from '@react-navigation/native';
 
 export default function Repositorios({ route, navigation }) {
     const [repo, setRepo] = useState([]);
+    const [nomeRepo, setNomeRepo] = useState('');
     const estaNaTela = useIsFocused();
+
+    async function buscarRepositorioPorNome() {
+        const resultado = await pegarRepositoriosDoUsuarioPeloNome(route.params.id, nomeRepo);
+        setRepo(resultado);
+        setNomeRepo('');
+    }
 
     useEffect(async () => {
         const resultado = await pegarRepositoriosDoUsuario(route.params.id);
@@ -14,7 +21,21 @@ export default function Repositorios({ route, navigation }) {
     }, [estaNaTela]);
 
     return (
-        <View style={estilos.container}>
+        <>
+            <View style={estilos.container}>
+                <TextInput
+                    value={nomeRepo}
+                    onChangeText={setNomeRepo}
+                    placeholder='Busque por um repositório'
+                    autoCapitalize='none'
+                    style={estilos.entrada}
+                />
+                <TouchableOpacity
+                    onPress={buscarRepositorioPorNome}
+                    style={estilos.botao}
+                >
+                    <Text style={estilos.textoBotao}>Buscar</Text>
+                </TouchableOpacity>
                 <Text style={estilos.repositoriosTexto}>{repo.length} repositórios criados</Text>
                 <TouchableOpacity 
                     style={estilos.botao}
@@ -37,6 +58,7 @@ export default function Repositorios({ route, navigation }) {
                         </TouchableOpacity>
                     )}
                 />
-        </View>
+            </View>
+        </>
     );
 }
