@@ -44,6 +44,17 @@ export async function criarRepositorioDoUsuario(postId, nome, data) {
     }
 }
 
+export async function deletarRepositorioDoUsuario(id) {
+    try {
+        await api.delete(`/repos/${id}`);
+        return 'sucesso';
+    }
+    catch (error) {
+        console.log(error);
+        return 'erro';
+    }
+}
+
 export async function pegarRepositoriosDoUsuarioPeloNome(id, nome) {
     const resultado = await api.get(`/repos?postId=${id}&name_like=${nome}`).then(response => {
         return response.data;
